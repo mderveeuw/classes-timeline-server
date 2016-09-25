@@ -1,0 +1,14 @@
+{
+  "name": "classes-timeline-server",
+  "version": "1.0.0",
+  "description": "A server to send pins for my timeline app to my Pebble watch.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Chim_",
+  "license": "ISC",
+  "dependencies": {
+    "pebble-api": "*"
+  }
+}
