@@ -57,11 +57,11 @@ var sendPins = function() {
         if(error) {
           return console.log("ERROR SENDING PIN: " + error);
         }
-      })}, 250);
+      })}, 1000);
 
       i++
 
-      setTimeout(pinLoop, 1000);
+      setTimeout(pinLoop, 5000);
     }
     else {
       scheduleFunction();
