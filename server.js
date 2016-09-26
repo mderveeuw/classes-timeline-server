@@ -57,7 +57,7 @@ var sendPins = function() {
         if(error) {
           return console.log("ERROR SENDING PIN: " + error);
         }
-      })}, 100);
+      })}, 250);
 
       i++
 
@@ -81,4 +81,4 @@ function scheduleFunction() {
   console.log("\nSCHEDULED FUNCTION CALL FOR sendPins(), HOURS TILL CALL: " + msTillTwelve/3600000);
 }
 
-scheduleFunction();
+sendPins();

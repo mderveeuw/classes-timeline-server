@@ -135,62 +135,6 @@
       "duration": "90"
     }
   },
-  "6": {
-    "0": {
-      "subject": "Computergebruik",
-      "location": "Sterre S9 - AUD A3",
-      "time": {
-        "hour": "10",
-        "min": "00"
-      },
-      "duration": "90"
-    },
-    "1": {
-      "subject": "Databanken",
-      "location": "Sterre S9 - AUD A0",
-      "time": {
-        "hour": "11",
-        "min": "30"
-      },
-      "duration": "90"
-    },
-    "2": {
-      "subject": "Databanken",
-      "location": "Sterre S9 - AUD A2",
-      "time": {
-        "hour": "14",
-        "min": "30"
-      },
-      "duration": "90"
-    }
-  },
-  "0": {
-    "0": {
-      "subject": "Computergebruik",
-      "location": "Sterre S9 - AUD A3",
-      "time": {
-        "hour": "10",
-        "min": "00"
-      },
-      "duration": "90"
-    },
-    "1": {
-      "subject": "Databanken",
-      "location": "Sterre S9 - AUD A0",
-      "time": {
-        "hour": "11",
-        "min": "30"
-      },
-      "duration": "90"
-    },
-    "2": {
-      "subject": "Databanken",
-      "location": "Sterre S9 - AUD A2",
-      "time": {
-        "hour": "14",
-        "min": "30"
-      },
-      "duration": "90"
-    }
-  }
+  "6": {},
+  "0": {}
 }
