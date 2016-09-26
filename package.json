@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "A server to send pins for my timeline app to my Pebble watch.",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Chimster/Classes-Timeline-Server"
+  },
   "scripts": {
     "start": "node server.js"
   },
