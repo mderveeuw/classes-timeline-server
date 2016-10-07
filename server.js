@@ -1,5 +1,6 @@
 var Timeline = require("pebble-api").Timeline,
-    classes = require("./classes.json");
+    classes = require("./classes.json"),
+    cron = require("node-cron");
 
 var timeline = new Timeline();
 
@@ -63,22 +64,12 @@ var sendPins = function() {
 
       setTimeout(pinLoop, 5000);
     }
-    else {
-      scheduleFunction();
-    }
   }
   pinLoop();
 }
 
-function scheduleFunction() {
-  var now = new Date();
-
-  var msTillTwelve = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0) - now;
-  if(msTillTwelve < 0) {
-    msTillTwelve += 86400000;
-  }
-  setTimeout(function() {sendPins()}, msTillTwelve);
-  console.log("\nSCHEDULED FUNCTION CALL FOR sendPins(), HOURS TILL CALL: " + msTillTwelve/3600000);
-}
+cron.schedule("00 00 * * *", function() {
+  sendPins();
+});
 
 sendPins();

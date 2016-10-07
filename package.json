@@ -13,6 +13,7 @@
   "author": "Chim_",
   "license": "ISC",
   "dependencies": {
-    "pebble-api": "*"
+    "pebble-api": "*",
+    "node-cron": "*"
   }
 }
