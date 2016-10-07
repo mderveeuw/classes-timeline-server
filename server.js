@@ -49,7 +49,7 @@ var sendPins = function() {
       }
     });
   }
-  console.log("\nAll daily pins sent");
+  console.log("\nAll daily pins sent\n");
 }
 
 cron.schedule("0 0 * * *", function() {
