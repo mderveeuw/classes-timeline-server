@@ -7,7 +7,7 @@ var timeline = new Timeline();
 var userToken = "SB8edorTdNFrdsaX4sEfP9BVKEZTzZ7o";
 
 var sendPins = function() {
-  console.log("COMMENCING PIN PROCESS");
+  console.log("\n\n\nStarting daily pin process");
 
   var date = new Date(),
       day = date.getDay(),
@@ -15,8 +15,6 @@ var sendPins = function() {
 
   for(var i = 0; i < Object.keys(dayObject).length; i++)  {
     var classObject = classes[day][i];
-
-    console.log("\nHANDLING OBJECT: " + JSON.stringify(classObject));
 
     date.setHours(parseInt(classObject.time.hour));
     date.setMinutes(parseInt(classObject.time.min));
@@ -37,18 +35,20 @@ var sendPins = function() {
       })
     });
 
-    console.log("INSERTING PIN IN USER TIMELINE");
-    console.log("ID: " + pinId);
-    console.log("TIME: " + date);
-
     timeline.sendUserPin(userToken, pin, function(error) {
-      console.log("SENDING USER PIN");
+      console.log("\nSending pin to user timeline: " +
+                  "\n\tid: " + pin.id +
+                  "\n\ttime: " + pin.time +
+                  "\n\tduration: " + pin.duration +
+                  "\n\ttitle: " + pin.layout.title +
+                  "\n\tlocationName: " + pin.layout.locationName);
 
       if(error) {
         return console.log("ERROR SENDING PIN: " + error);
       }
     });
   }
+  console.log("\nAll daily pins sent");
 }
 
 cron.schedule("00 00 * * *", function() {
