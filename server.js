@@ -35,14 +35,15 @@ var sendPins = function() {
       })
     });
 
-    timeline.sendUserPin(userToken, pin, function(error) {
-      console.log("\nSending pin to user timeline: " +
-                  "\n\tid: " + pin.id +
-                  "\n\ttime: " + pin.time +
-                  "\n\tduration: " + pin.duration +
-                  "\n\ttitle: " + pin.layout.title +
-                  "\n\tlocationName: " + pin.layout.locationName);
+    console.log("\nSending pin to user timeline: " +
+                "\n\tid: " + pin.id +
+                "\n\ttime: " + pin.time +
+                "\n\tduration: " + pin.duration +
+                "\n\ttitle: " + pin.layout.title +
+                "\n\tlocationName: " + pin.layout.locationName);
 
+    timeline.sendUserPin(userToken, pin, function(error) {
+      console.log("Pin sent succesfully");
       if(error) {
         return console.log("ERROR SENDING PIN: " + error);
       }
@@ -51,7 +52,7 @@ var sendPins = function() {
   console.log("\nAll daily pins sent");
 }
 
-cron.schedule("00 00 * * *", function() {
+cron.schedule("0 0 * * *", function() {
   sendPins();
 });
 
