@@ -9,63 +9,46 @@ var userToken = "SB8edorTdNFrdsaX4sEfP9BVKEZTzZ7o";
 var sendPins = function() {
   console.log("COMMENCING PIN PROCESS");
 
-  var i = 0,
-      date = new Date(),
-      pinTime = date,
+  var date = new Date(),
       day = date.getDay(),
-      dayObj = classes[day];
+      dayObject = classes[day];
 
-  function pinLoop() {
-    if(i < Object.keys(dayObj).length) {
-      var classObj = classes[day][i];
+  for(var i = 0; i < Object.keys(dayObject).length; i++)  {
+    var classObject = classes[day][i];
 
-      console.log("\nHANDLING OBJECT: " + JSON.stringify(classObj));
+    console.log("\nHANDLING OBJECT: " + JSON.stringify(classObject));
 
-      pinTime.setHours(parseInt(classObj.time.hour));
-      pinTime.setMinutes(parseInt(classObj.time.min));
-      pinTime.setSeconds(0);
+    date.setHours(parseInt(classObject.time.hour));
+    date.setMinutes(parseInt(classObject.time.min));
+    date.setSeconds(0);
 
-      var pinId = classObj.subject + classObj.time.hour + classObj.time.min;
-      pinId = pinId.toLowerCase();
+    var pinId = classObject.subject + "-" + classObject.time.hour + classObject.time.min + "-" + date.getDate() + date.getMonth();
+    pinId = pinId.toLowerCase();
 
-      var pin = new Timeline.Pin({
-        id: pinId,
-        time: pinTime,
-        duration: parseInt(classObj.duration),
-        layout: new Timeline.Pin.Layout({
-          type: Timeline.Pin.LayoutType.CALENDAR_PIN,
-          tinyIcon: Timeline.Pin.Icon.NOTIFICATION_FLAG,
-          title: classObj.subject,
-          locationName: classObj.location
-        })
-      });
+    var pin = new Timeline.Pin({
+      id: pinId,
+      time: date,
+      duration: parseInt(classObject.duration),
+      layout: new Timeline.Pin.Layout({
+        type: Timeline.Pin.LayoutType.CALENDAR_PIN,
+        tinyIcon: Timeline.Pin.Icon.NOTIFICATION_FLAG,
+        title: classObject.subject,
+        locationName: classObject.location
+      })
+    });
 
-      console.log("INSERTING PIN IN USER TIMELINE");
-      console.log("ID: " + pinId);
-      console.log("TIME: " + pinTime);
+    console.log("INSERTING PIN IN USER TIMELINE");
+    console.log("ID: " + pinId);
+    console.log("TIME: " + date);
 
-      timeline.deleteUserPin(userToken, pin, function(error) {
-        console.log("DELETING USER PIN");
+    timeline.sendUserPin(userToken, pin, function(error) {
+      console.log("SENDING USER PIN");
 
-        if(error) {
-          return console.log("ERROR DELETING PIN: " + error);
-        }
-      });
-
-      setTimeout(function() {timeline.sendUserPin(userToken, pin, function(error) {
-        console.log("SENDING USER PIN");
-
-        if(error) {
-          return console.log("ERROR SENDING PIN: " + error);
-        }
-      })}, 1000);
-
-      i++
-
-      setTimeout(pinLoop, 5000);
-    }
+      if(error) {
+        return console.log("ERROR SENDING PIN: " + error);
+      }
+    });
   }
-  pinLoop();
 }
 
 cron.schedule("00 00 * * *", function() {
