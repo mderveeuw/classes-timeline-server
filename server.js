@@ -20,7 +20,7 @@ var sendPins = function() {
     date.setMinutes(parseInt(classObject.time.min));
     date.setSeconds(0);
 
-    var pinId = classObject.subject + "-" + classObject.time.hour + classObject.time.min + "-" + date.getDate() + date.getMonth();
+    var pinId = classObject.subject + "-" + classObject.time.hour + classObject.time.min + "-" + date.getDate() + date.getMonth() + date.getFullYear();
     pinId = pinId.toLowerCase();
 
     var pin = new Timeline.Pin({
