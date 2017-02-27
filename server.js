@@ -4,7 +4,7 @@ var Timeline = require("pebble-api").Timeline,
 
 var timeline = new Timeline();
 
-var userToken = "SB8edorTdNFrdsaX4sEfP9BVKEZTzZ7o";
+var userToken = "";
 
 var sendPins = function() {
   console.log("\n\n\nStarting daily pin process");
