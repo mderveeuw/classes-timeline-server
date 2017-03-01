@@ -9,9 +9,10 @@ var userToken = config.userToken;
 
 function sendPins(classes) {
 	for(var c in classes)  {
-		var id = classes[c].summary.substring(0, 16) + "-" + classes[c].start.getHours() +
-		  classes[c].start.getMinutes() + "-" + classes[c].start.getDate() + classes[c].start.getMonth() +
-		  classes[c].start.getFullYear();
+		var id = classes[c].summary.substring(0, 16) + "-"
+		  + classes[c].start.getHours() + classes[c].start.getMinutes()
+		  + "-" + classes[c].start.getDate() + classes[c].start.getMonth()
+		  + classes[c].start.getFullYear();
 
 		var pin = new Timeline.Pin({
 			id: id,
