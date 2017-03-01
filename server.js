@@ -1,59 +1,67 @@
 var Timeline = require("pebble-api").Timeline,
-    classes = require("./classes.json"),
-    cron = require("node-cron");
+	ical = require("ical"),
+	cron = require("node-cron"),
+	config = require("./config.json");
 
 var timeline = new Timeline();
 
-var userToken = "";
+var userToken = config.userToken;
 
-var sendPins = function() {
-  console.log("\n\n\nStarting daily pin process");
+function sendPins(classes) {
+	for(var c in classes)  {
+		var id = classes[c].summary.substring(0, 16) + "-" + classes[c].start.getHours() +
+		  classes[c].start.getMinutes() + "-" + classes[c].start.getDate() + classes[c].start.getMonth() +
+		  classes[c].start.getFullYear();
 
-  var date = new Date(),
-      day = date.getDay(),
-      dayObject = classes[day];
+		var pin = new Timeline.Pin({
+			id: id,
+			time: classes[c].start,
+			duration: (classes[c].end - classes[c].start) / 60000,
+			layout: new Timeline.Pin.Layout({
+				type: Timeline.Pin.LayoutType.CALENDAR_PIN,
+				tinyIcon: Timeline.Pin.Icon.NOTIFICATION_FLAG,
+				title: classes[c].summary,
+				locationName: classes[c].location
+			})
+		});
 
-  for(var i = 0; i < Object.keys(dayObject).length; i++)  {
-    var classObject = classes[day][i];
+		timeline.sendUserPin(userToken, pin, function(error) {
+			if(error) {
+				console.log("ERROR SENDING PIN: " + error);
+			} else {
+				console.log("Sent pin:");
+				console.log(pin)
+			}
+		});
+	}
+}
 
-    date.setHours(parseInt(classObject.time.hour));
-    date.setMinutes(parseInt(classObject.time.min));
-    date.setSeconds(0);
-
-    var pinId = classObject.subject + "-" + classObject.time.hour + classObject.time.min + "-" + date.getDate() + date.getMonth() + date.getFullYear();
-    pinId = pinId.toLowerCase();
-
-    var pin = new Timeline.Pin({
-      id: pinId,
-      time: date,
-      duration: parseInt(classObject.duration),
-      layout: new Timeline.Pin.Layout({
-        type: Timeline.Pin.LayoutType.CALENDAR_PIN,
-        tinyIcon: Timeline.Pin.Icon.NOTIFICATION_FLAG,
-        title: classObject.subject,
-        locationName: classObject.location
-      })
-    });
-
-    console.log("\nSending pin to user timeline: " +
-                "\n\tid: " + pin.id +
-                "\n\ttime: " + pin.time +
-                "\n\tduration: " + pin.duration +
-                "\n\ttitle: " + pin.layout.title +
-                "\n\tlocationName: " + pin.layout.locationName);
-
-    timeline.sendUserPin(userToken, pin, function(error) {
-      console.log("Pin sent succesfully");
-      if(error) {
-        return console.log("ERROR SENDING PIN: " + error);
-      }
-    });
-  }
-  console.log("\nAll daily pins sent\n");
+function getClasses() {
+	var classes = [];
+	var today = new Date();
+	return new Promise(function(resolve, reject) {
+		ical.fromURL(config.icalURL, {}, function(err, data) {
+			if(err) {
+				reject(err);
+			}
+			for(var d in data) {
+				if(data.hasOwnProperty(d) && 'start' in data[d]) {
+					if(today.getDate() === data[d].start.getDate()
+					  && today.getMonth() === data[d].start.getMonth()
+					  && today.getFullYear() === data[d].start.getFullYear()) {
+						classes.push(data[d]);
+					}
+				}
+			}
+			resolve(classes);
+		});
+	});
 }
 
 cron.schedule("0 0 * * *", function() {
-  sendPins();
+	getClasses().then(function(classes) {
+		sendPins(classes);
+	}).catch(function(err) {
+		console.log(err);
+	});
 });
-
-sendPins();
